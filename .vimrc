@@ -11,7 +11,7 @@ set encoding=utf-8
 " 表示関連
 " 行番号の表示
 set number
-" タブをスペースにする
+" タブをスペースにする 
 set expandtab
 set tabstop=2
 set softtabstop=2
