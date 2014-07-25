@@ -177,7 +177,7 @@ if has('autocmd')
 endif
 
 
-" 行末にセミコロン;をつけて改行
+" 行末にセミコロン;をつけて改行  
 " インサートモードでのみ動作するので注意
 function! IsEndSemicolon()
   let c = getline(".")[col("$")-2]
@@ -207,7 +207,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle "tyru/caw.vim.git"
+NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'scrooloose/nerdtree'
 
