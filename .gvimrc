@@ -10,7 +10,12 @@ colorscheme desert
 "colorscheme jellybeans
 "set background=dark
 " 透明度の設定
-set transparency=10
+if has('gui_macvim')
+  set transparency=10
+else
+  autocmd FocusGained * set transparency=210
+  autocmd FocusLost * set transparency=128  " フォーカスされてない時は不透明を強くする
+endif
 " ============================
 " 文字関連
 if has('gui_macvim')
