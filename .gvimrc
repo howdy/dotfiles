@@ -13,13 +13,13 @@ colorscheme desert
 set transparency=10
 " ============================
 " 文字関連
-if (has('gui_macvim')) {
-} else {
+if has('gui_macvim')
+else
   " 半角文字の設定
   set guifont=MS_Gothic:h10
   " 全角文字の設定
   set guifontwide=MS_Gothic:h10
-}
+endif
 " 不可視文字の表示
 exe "set list listchars=tab:\<Char-0xBB>\<Char-0xA0>,eol:\<Char-0x21b2>"
 
