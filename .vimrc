@@ -21,7 +21,8 @@ set list
 
 " カーソルラインを表示
 set cursorline
-
+" 80文字目にライン
+set colorcolumn=80
 " ===========================
 " ステータスライン {{{2
 "入力モード時、ステータスラインのカラーを変更
@@ -52,6 +53,9 @@ set statusline+=[%{has('multi_byte')&&\&fileencoding!=''?&fileencoding:&encoding
 set statusline+=%y
 
 " ===========================
+"
+"
+"
 " 自動で生成されるファイルの生成先 {{{1
 " Undoファイルの生成先を変更する
 set undodir=$VIM/_undo
@@ -103,7 +107,10 @@ augroup vimrcEx
     \   exe "normal! g`\"" |
     \ endif
 augroup END
-
+" コマンド履歴の保存数
+set history=200
+cnoremap <C-p> <Up> " 履歴を辿る /<C-p>,  :<C-P> など
+cnoremap <C-n> <Down>
 " ===========================
 " 検索設定
 " インクリメンタルサーチ
@@ -209,14 +216,17 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " 読み込むプラグインを記載
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'itchyny/lightline.vim' " ステータスラインのデザインなどの拡張
-NeoBundle 'tyru/caw.vim.git'  " 簡単にコメントアウト・解除できる
+NeoBundle 'itchyny/lightline.vim'   " ステータスラインのデザインなどの拡張
+NeoBundle 'tyru/caw.vim.git'        " 簡単にコメントアウト・解除できる
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'thinca/vim-singleton'  " 1つのVimで複数ファイルを開く
-NeoBundle 'rcmdnk/vim-markdown' " Markdownファイル用
-NeoBundle 'kannokanno/previm'   " Markdownファイルのブラウザプレビュー
-NeoBundle 'tyru/open-browser.vim' " URLやMarkdownをブラウザで見る
+NeoBundle 'thinca/vim-singleton'    " 1つのVimで複数ファイルを開く
+NeoBundle 'rcmdnk/vim-markdown'     " Markdownファイル用
+NeoBundle 'kannokanno/previm'       " Markdownファイルのブラウザプレビュー
+NeoBundle 'tyru/open-browser.vim'   " URLやMarkdownをブラウザで見る
+NeoBundle 'Shougo/neosnippet'       " スニペット
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/neocomplcache'
 
 " 読み込んだプラグインも含め、ファイルタイプの検出、ファイルタイプ別プラグイン/インデントを有効化する
 filetype plugin indent on
@@ -235,8 +245,65 @@ vmap <Leader>c <plug>(caw:i:toggle)
 " 下記以外にも、uniteやvimfiler, vimshellでなんかかっこよくなるよう設定できるらしい(あとでやろう)
 " http://itchyny.hatenablog.com/entry/20130828/1377653592
 let g:lightline = {
-      \ 'colorscheme': 'wombat'
-      \ }
+        \ 'colorscheme': 'wombat',
+        \ 'mode_map': {'c': 'NORMAL'},
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+        \ },
+        \ 'component_function': {
+        \   'modified': 'MyModified',
+        \   'readonly': 'MyReadonly',
+        \   'fugitive': 'MyFugitive',
+        \   'filename': 'MyFilename',
+        \   'fileformat': 'MyFileformat',
+        \   'filetype': 'MyFiletype',
+        \   'fileencoding': 'MyFileencoding',
+        \   'mode': 'MyMode'
+        \ }
+        \ }
+
+function! MyModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! MyReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+endfunction
+
+function! MyFilename()
+  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \  &ft == 'unite' ? unite#get_status_string() :
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyFugitive()
+  try
+    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+      return fugitive#head()
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! MyFileencoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! MyMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
       
 " =================================
 " unite.vim {{{2
@@ -289,11 +356,39 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default=0
 let g:netrw_liststyle=3
 
+" =================================
+" neosnippet {{{2
+ " Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
+" SuperTab like snippets behavior.
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: "\<TAB>"
+imap <expr><TAB>
+\ neosnippet#expandable() <Bar><Bar> neosnippet#jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<C-n>"
 
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+" php_functions.snip
+augroup filetypedetect
+  autocmd!  BufEnter *.php NeoSnippetSource ~/.vim/bundle/neosnippet-snippets/neosnippets/php_functions.snip
+augroup END
+
+"let g:neosnippet#scope_aliases['php'] = 'php,php_functions'
 
 " 折りたたみ設定（コメントになってるけど有効
 " vim: foldmethod=marker
 " vim: foldcolumn=3
 " vim: foldlevel=0
+"
+"
 "

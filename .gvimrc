@@ -2,19 +2,21 @@ scriptencoding utf-8
 
 " ウィンドウサイズ
 set lines=60
-set columns=120
+set columns=150
 
 " colorschemeを上書きする設定(colorschemeの読み込み前に記述)
 " 全体の色
-autocmd ColorScheme * highlight Normal guifg=#DDDDDD guibg=#000000
+autocmd ColorScheme * highlight Normal guifg=#DDDDDD guibg=#111111
 " コメント色
-autocmd ColorScheme * highlight Comment ctermfg=22 guifg=#FF7200
+autocmd ColorScheme * highlight Comment ctermfg=22 guifg=#E2A412
 " TODO
-autocmd ColorScheme * highlight Todo guifg=#000000 guibg=#CCFF00
+"autocmd ColorScheme * highlight Todo guifg=#000000 guibg=#CCFF00
 
 " カラースキーム
-colorscheme desert
-"colorscheme hybrid
+" 置き場所:C:\Vim\vim74\colors\
+"colorscheme Tomorrow-Night-Bright
+" colorscheme desert
+colorscheme hybrid
 "colorscheme jellybeans
 "set background=dark
 " 透明度の設定
