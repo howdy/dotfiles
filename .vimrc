@@ -1,14 +1,11 @@
 scriptencoding utf-8
-
+" 基本設定 {{{1
 " Vim内部文字エンコーディングをUTF-8にする
 set encoding=utf-8
-" 文字コード自動判定
-"set fileencodings=iso-2022-jp,cp932,sjis,utf-8,euc-jp  (動かない)
-
 
 
 " ============================
-" 表示関連
+" 表示関連 {{{1
 " 行番号の表示
 set number
 " タブをスペースにする 
@@ -24,17 +21,9 @@ set list
 
 " カーソルラインを表示
 set cursorline
-" ===========================
-" 自動で生成されるファイルの生成先
-" Undoファイルの生成先を変更する
-set undodir=$VIM/_undo
-" バックアップファイルの生成先
-set backupdir=$VIM/_backup
-" スワップファイルの生成先
-set directory=$VIM/_backup
 
 " ===========================
-" ステータスライン
+" ステータスライン {{{2
 "入力モード時、ステータスラインのカラーを変更
 augroup InsertHook
 autocmd!
@@ -62,12 +51,20 @@ set statusline+=[%{has('multi_byte')&&\&fileencoding!=''?&fileencoding:&encoding
 "ファイルタイプ表示
 set statusline+=%y
 
+" ===========================
+" 自動で生成されるファイルの生成先 {{{1
+" Undoファイルの生成先を変更する
+set undodir=$VIM/_undo
+" バックアップファイルの生成先
+set backupdir=$VIM/_backup
+" スワップファイルの生成先
+set directory=$VIM/_backup
 " =============================
 " *.mdのファイル・タイプをMarkdownにする
 au BufNewFile,BufRead *.md set filetype=markdown
 
 " ===========================
-" プログラム関連
+" プログラム関連 {{{1
 " 括弧とクォーテーションの自動補完
 " !!! イマイチ使いづらいのでとりあえずコメントアウト
 "inoremap { {}<LEFT>
@@ -87,7 +84,7 @@ set smartindent
 set smarttab
 
 " ===========================
-" その他
+" その他{{{1
 " クリップボードを使う
 set clipboard=unnamed,autoselect
 " 対応する括弧を強調
@@ -117,7 +114,7 @@ set ignorecase
 set smartcase
 
 " ===========================
-" キーマップ変更
+" キーマップ変更 {{{1
 " * プラグインに依るものはプラグインごとに下の方に記述
 " ノーマルモードでもEnterキーで改行を挿入
 noremap <CR> o<ESC>
@@ -192,8 +189,7 @@ endif
 
 
 " =========================================================================
-" neobundle
-" 以下プラグイン関連の設定
+" 以下プラグイン関連の設定 {{{1
 " 会社のWin機ではプラグインのファイルは C:\Users\ap_kawahara_BTO\.vim\bundle\
 " にセットされる。
 " =================================
@@ -218,9 +214,9 @@ NeoBundle 'tyru/caw.vim.git'  " 簡単にコメントアウト・解除できる
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'thinca/vim-singleton'  " 1つのVimで複数ファイルを開く
-NeoBundle 'rcmdnk/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'rcmdnk/vim-markdown' " Markdownファイル用
+NeoBundle 'kannokanno/previm'   " Markdownファイルのブラウザプレビュー
+NeoBundle 'tyru/open-browser.vim' " URLやMarkdownをブラウザで見る
 
 " 読み込んだプラグインも含め、ファイルタイプの検出、ファイルタイプ別プラグイン/インデントを有効化する
 filetype plugin indent on
@@ -229,13 +225,13 @@ filetype plugin indent on
 NeoBundleCheck
 
 " =================================
-" caw.vimの設定
+" caw.vimの設定 {{{2
 " \cで行のコメントアウト・戻すができる
 nmap <Leader>c <plug>(caw:i:toggle)
 vmap <Leader>c <plug>(caw:i:toggle)
 
 " =================================
-" lightline.vimの設定
+" lightline.vim {{{2
 " 下記以外にも、uniteやvimfiler, vimshellでなんかかっこよくなるよう設定できるらしい(あとでやろう)
 " http://itchyny.hatenablog.com/entry/20130828/1377653592
 let g:lightline = {
@@ -243,7 +239,7 @@ let g:lightline = {
       \ }
       
 " =================================
-""" unite.vim
+" unite.vim {{{2
 " 入力モードで開始する
 " let g:unite_enable_start_insert=1
 " バッファ一覧
@@ -269,19 +265,35 @@ au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 
 " =================================
-" singleton.vimの設定
+" singleton.vim {{{2
 call singleton#enable()
 
 
 " =================================
-" previm
+"
+" previm {{{2
 let g:previm_open_cmd = ''
 " =================================
-" open-browser.vim
+" open-browser.vim {{{2
 " カーソル下のURLをブラウザで開く
 nmap <Leader>o <Plug>(openbrowser-open)
 vmap <Leader>o <Plug>(openbrowser-open)
 " ググる
 nnoremap <Leader>g :<C-u>OpenBrowserSearch<Space><C-r><C-w><Enter>
 " http://www.google.jp/
+" =================================
+" VimFiler {{{2
+"デフォルトでIDE風のFilerを開く
+autocmd VimEnter * VimFiler -split -simple -winwidth=30 -no-quit
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default=0
+let g:netrw_liststyle=3
+
+
+
+
+" 折りたたみ設定（コメントになってるけど有効
+" vim: foldmethod=marker
+" vim: foldcolumn=3
+" vim: foldlevel=0
 "
