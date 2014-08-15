@@ -11,6 +11,11 @@ autocmd ColorScheme * highlight Normal guifg=#DDDDDD guibg=#111111
 autocmd ColorScheme * highlight Comment ctermfg=22 guifg=#E2A412
 " TODO
 "autocmd ColorScheme * highlight Todo guifg=#000000 guibg=#CCFF00
+" ポップアップ
+autocmd ColorScheme * highlight Pmenu guifg=#003000 guibg=#999999
+autocmd ColorScheme * highlight PmenuSel guifg=#006800 guibg=#FFFFFF
+autocmd ColorScheme * highlight PmenuSbar guifg=#001800
+autocmd ColorScheme * highlight PmenuThumb guifg=#006000
 
 " カラースキーム
 " 置き場所:C:\Vim\vim74\colors\
@@ -26,8 +31,6 @@ else
 "  autocmd FocusGained * set transparency=255
 "  autocmd FocusLost * set transparency=250  " フォーカスされてない時は不透明を強くする
 endif
-
-
 " ============================
 " 文字関連
 if has('gui_macvim')
