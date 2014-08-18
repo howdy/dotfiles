@@ -159,6 +159,15 @@ nnoremap <Space>. :<C-u>edit $MYVIMRC<Enter>
 nnoremap <Space>s. :<C-u>source $MYVIMRC<Enter>
 
 " ===========================
+" PHP
+let php_sql_query = 1
+let php_baselib = 1
+let php_htmlInStrings = 1
+let php_noShortTags = 1
+let php_parent_error_close = 1
+let g:sql_type_default='mysql'
+
+" ===========================
 " 文字コード自動判別
 " 参考
 " http://bi.biopapyrus.net/linux/vim.html
