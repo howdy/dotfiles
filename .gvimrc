@@ -9,6 +9,10 @@ set columns=150
 autocmd ColorScheme * highlight Normal guifg=#DDDDDD guibg=#111111
 " コメント色
 autocmd ColorScheme * highlight Comment ctermfg=22 guifg=#E2A412
+" プログラムで主な単語(ifとか)
+autocmd ColorScheme * highlighAt Identifier guifg=#81a2be
+" 行番号(編集中以外)
+autocmd ColorScheme * highlight LineNr guifg=#AAAAAA
 " TODO
 "autocmd ColorScheme * highlight Todo guifg=#000000 guibg=#CCFF00
 " ポップアップ
@@ -31,6 +35,14 @@ else
 "  autocmd FocusGained * set transparency=255
 "  autocmd FocusLost * set transparency=250  " フォーカスされてない時は不透明を強くする
 endif
+" インサートモードに入った時にカーソル行(列)の色を変更する
+augroup vimrc_change_cursorline_color
+  autocmd!
+  " インサートモードに入った時にカーソル行の色をブルーグリーンにする
+  autocmd InsertEnter * highlight CursorLine ctermbg=24 guibg=#005f87 | highlight CursorColumn ctermbg=24 guibg=#005f87
+  " インサートモードを抜けた時にカーソル行の色を黒に近いダークグレーにする
+  autocmd InsertLeave * highlight CursorLine ctermbg=236 guibg=#303030 | highlight CursorColumn ctermbg=236 guibg=#303030
+augroup END
 " ============================
 " 文字関連
 if has('gui_macvim')
