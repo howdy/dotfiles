@@ -10,7 +10,7 @@ autocmd ColorScheme * highlight Normal guifg=#DDDDDD guibg=#111111
 " コメント色
 autocmd ColorScheme * highlight Comment ctermfg=22 guifg=#E2A412
 " プログラムで主な単語(ifとか)
-autocmd ColorScheme * highlighAt Identifier guifg=#81a2be
+autocmd ColorScheme * highlight Identifier guifg=#81a2be
 " 行番号(編集中以外)
 autocmd ColorScheme * highlight LineNr guifg=#AAAAAA
 " TODO
@@ -78,7 +78,11 @@ if has('syntax')
   call ZenkakuSpace()
 endif
 
-
+// MacVimはmulti_byte_imeは使えないらしい・・・
+if has('multi_byte_ime') || has('xim')
+ highlight Cursor guifg=NONE quibg=Green
+ highlight CursorIM guifg=NONE quibg=Purple
+endif
 " ============================
 " その他
 " ノーマルモードはIMEをOFFにする
@@ -90,3 +94,4 @@ if has('multi_byte_ime') || has('xim') || has('gui_macvim')
   " Normal mode: IME off
   inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 endif
+
