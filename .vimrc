@@ -37,6 +37,7 @@ augroup InsertHook
 autocmd!
 autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
+
 augroup END
 "ステータスラインにコマンドを表示
 set showcmd
